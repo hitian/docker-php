@@ -3,7 +3,10 @@ FROM ubuntu:16.04
 #for china user.
 #RUN sed -i -- 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list
 
-RUN apt-get update -y && apt-get install -y curl build-essential libxml2-dev zlib1g-dev libcurl4-openssl-dev libjpeg-dev libpng-dev autoconf pkg-config libmemcached-dev libmcrypt-dev
+RUN apt-get update -y && apt-get upgrade -y
+RUN apt-get install -y curl build-essential libxml2-dev zlib1g-dev libcurl4-openssl-dev libjpeg-dev libpng-dev autoconf pkg-config libmemcached-dev libmcrypt-dev nginx
+COPY php-nginx.conf /etc/nginx/sites-available/default
+COPY start.sh /start.sh
 RUN cd /tmp && curl -s -L -o libmcrypt-2.5.8.tar.gz https://www.dropbox.com/s/073wv8fa75pwdqu/libmcrypt-2.5.8.tar.gz?dl=1 && \
     tar zxf libmcrypt-2.5.8.tar.gz && cd libmcrypt-2.5.8 && ./configure && make && make install && \
     cd /tmp && curl -s -L -o php54.tar.gz https://secure.php.net/distributions/php-5.4.45.tar.gz && \
@@ -41,6 +44,9 @@ RUN cd /tmp && curl -s -L -o libmcrypt-2.5.8.tar.gz https://www.dropbox.com/s/07
     mkdir -p /opt/php/modules && \
     mkdir -p /opt/php/conf.d && export PATH=$PATH:/opt/bin && \
     cp php.ini-development /opt/php/php.ini && \
+    cp sapi/fpm/init.d.php-fpm /etc/init.d/php-fpm && \
+    cp sapi/fpm/php-fpm.conf /opt/etc/php-fpm.conf && \
+    chmod 755 /etc/init.d/php-fpm && addgroup nobody && \
     export EXT_DIR=$(php-config --extension-dir) && \
     echo "extension_dir = $EXT_DIR" >> /opt/php/php.ini && \
     mkdir -p $EXT_DIR && \
@@ -63,7 +69,7 @@ RUN cd /tmp && curl -s -L -o libmcrypt-2.5.8.tar.gz https://www.dropbox.com/s/07
     echo "zend_extension=$EXT_DIR/xdebug.so" > /opt/php/conf.d/xdebug.ini && \
     rm -rf /tmp/*
 
-ENV PATH /opt/bin:$PATH
-VOLUME [ "/app" ]
+ENV PATH /opt/bin:/opt/sbin:$PATH
 WORKDIR /app
-CMD ["php", "-v"]
+EXPOSE 80 443
+CMD ["bash", "/start.sh"]

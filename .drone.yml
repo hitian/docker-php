@@ -1,0 +1,6 @@
+pipeline:
+  docker:
+    image: plugins/docker
+    dockerfile: Dockerfile
+    repo: reg.hitian.me/php54
+    registry: reg.hitian.me
