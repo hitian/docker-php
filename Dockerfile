@@ -58,9 +58,18 @@ RUN cd /tmp && curl -s -L -o libmcrypt-2.5.8.tar.gz https://www.dropbox.com/s/07
     tar zxf redis-2.2.7.tar.gz && cd redis-2.2.7/ && phpize && \
     ./configure && make -j4 && cp modules/redis.so $EXT_DIR && \
     touch /opt/php/conf.d/redis.ini && echo "extension=$EXT_DIR/redis.so" >> /opt/php/conf.d/redis.ini && \
+    cd /tmp && curl -s -L -o msgpack-0.5.7.tgz https://pecl.php.net/get/msgpack-0.5.7.tgz && \
+    tar zxf msgpack-0.5.7.tgz && cd msgpack-0.5.7/ && phpize && \
+    ./configure --with-msgpack && make -j4 && cp modules/msgpack.so $EXT_DIR && \
+    touch /opt/php/conf.d/msgpack.ini && echo "extension=$EXT_DIR/msgpack.so" >> /opt/php/conf.d/msgpack.ini && \
+    cd /tmp && curl -s -L -o igbinary-1.2.1.tgz https://pecl.php.net/get/msgpack-0.5.7.tgz && \
+    tar zxf igbinary-1.2.1.tgz && cd igbinary-1.2.1/ && phpize && \
+    ./configure --enable-igbinary && make -j4 && cp modules/igbinary.so $EXT_DIR && \
+    touch /opt/php/conf.d/igbinary.ini && echo "extension=$EXT_DIR/igbinary.so" >> /opt/php/conf.d/igbinary.ini && \
     cd /tmp && curl -s -L -o memcached-2.2.0.tgz https://pecl.php.net/get/memcached-2.2.0.tgz && \
     tar zxf memcached-2.2.0.tgz && cd memcached-2.2.0 && \
-    phpize && ./configure  && make -j4 && cp modules/memcached.so $EXT_DIR && \
+    phpize && ./configure --enable-memcached --enable-memcached-igbinary --enable-memcached-json --enable-memcached-msgpack && \
+    make -j4 && cp modules/memcached.so $EXT_DIR && \
     touch /opt/php/conf.d/memcached.ini && echo "extension=$EXT_DIR/memcached.so" > /opt/php/conf.d/memcached.ini && \
     cd /tmp && curl -s -L -o xdebug-2.4.1.tgz https://xdebug.org/files/xdebug-2.4.1.tgz && \
     tar xzvf xdebug-2.4.1.tgz && cd xdebug-2.4.1 && \
