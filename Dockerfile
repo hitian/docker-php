@@ -62,7 +62,7 @@ RUN cd /tmp && curl -s -L -o libmcrypt-2.5.8.tar.gz https://www.dropbox.com/s/07
     tar zxf msgpack-0.5.7.tgz && cd msgpack-0.5.7/ && phpize && \
     ./configure --with-msgpack && make -j4 && cp modules/msgpack.so $EXT_DIR && \
     touch /opt/php/conf.d/msgpack.ini && echo "extension=$EXT_DIR/msgpack.so" >> /opt/php/conf.d/msgpack.ini && \
-    cd /tmp && curl -s -L -o igbinary-1.2.1.tgz https://pecl.php.net/get/msgpack-0.5.7.tgz && \
+    cd /tmp && curl -s -L -o igbinary-1.2.1.tgz https://pecl.php.net/get/igbinary-1.2.1.tgz && \
     tar zxf igbinary-1.2.1.tgz && cd igbinary-1.2.1/ && phpize && \
     ./configure --enable-igbinary && make -j4 && cp modules/igbinary.so $EXT_DIR && \
     touch /opt/php/conf.d/igbinary.ini && echo "extension=$EXT_DIR/igbinary.so" >> /opt/php/conf.d/igbinary.ini && \
