@@ -19,4 +19,4 @@ docker run -p 80:80 -p 443:443 -v /www/root:/app -d hitian/php:56
 
 ## versions
 
-[php 5.4](/hitian/docker-php/tree/php54)
+[php 5.4](https://github.com/hitian/docker-php/tree/php54)
